@@ -185,32 +185,18 @@ while running:
             pos_x, pos_y = event.pos
             pos_x //= cell_size #kattintás poziciójából mátrix index
             pos_y //= cell_size
-            if status == 0:
-                if type(tabla[pos_y][pos_x]) != int and tabla[pos_y][pos_x].vilagos == True:
-                    kijelolt = tabla[pos_y][pos_x]
-                    lehetoseg_pos = kijelolt.hova_lephet() + kijelolt.hova_uthet() if type(kijelolt) == Pawn else kijelolt.hova_lephet()
-                    status = 1
-                    break
-                break 
-                
-            if status == 1:
-                kijelolt.lepes(kijelolt.y - pos_y, abs(kijelolt.x - pos_x)) 
-                lehetoseg_pos = []
-            elif status == 3:
-                if type(tabla[pos_y][pos_x]) != int and tabla[pos_y][pos_x].vilagos == False:
-                    kijelolt = tabla[pos_y][pos_x]
-                    lehetoseg_pos = kijelolt.hova_lephet() + kijelolt.hova_uthet() if type(kijelolt) == Pawn else kijelolt.hova_lephet()
-                else:
-                    if (pos_y, pos_x) in lehetoseg_pos:
-                        if kijelolt.vilagos:
-                            kijelolt.lepes(kijelolt.y - pos_y, abs(kijelolt.x - pos_x)) 
+            if type(tabla[pos_y][pos_x]) != int:
+                kijelolt = tabla[pos_y][pos_x]
+                lehetoseg_pos = kijelolt.hova_lephet() + kijelolt.hova_uthet() if type(kijelolt) == Pawn else kijelolt.hova_lephet()
+            else:
+                if (pos_y, pos_x) in lehetoseg_pos:
+                    if kijelolt.vilagos:
+                            kijelolt.lepes(kijelolt.y - pos_y, kijelolt.x - pos_x)
                             lehetoseg_pos = []
-                        elif kijelolt.vilagos == False:
+                    elif kijelolt.vilagos == False:
                             kijelolt.lepes(pos_y - kijelolt.y, pos_x - kijelolt.x)
                             lehetoseg_pos = []
-                    else:
-                        lehetoseg_pos = []
-                status = 0
-            else: status = 0
+                else:
+                    lehetoseg_pos = []
     pg.display.flip()
 pg.quit()
