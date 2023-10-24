@@ -42,24 +42,24 @@ class Pawn(Piece):
         if self.vilagos:
             if tabla[self.y - 1][self.x - 1] ==0 and tabla[self.y - 1][self.x + 1] == 0:
                 return [] 
-            elif tabla[self.y - 1][self.x - 1] !=0: 
+            elif tabla[self.y - 1][self.x - 1] !=0 and tabla[self.y - 1][self.x - 1].vilagos == False: 
                 uthet.append((self.y - 1,self.x - 1))
-                if tabla[self.y - 1][self.x + 1] !=0: 
+                if tabla[self.y - 1][self.x + 1] !=0 and tabla[self.y - 1][self.x + 1].vilagos == False: 
                     uthet.append((self.y - 1,self.x + 1))
-            elif tabla[self.y - 1][self.x + 1] !=0: 
+            elif tabla[self.y - 1][self.x + 1] !=0 and tabla[self.y - 1][self.x + 1].vilagos == False: 
                 uthet.append((self.y - 1,self.x + 1))
-                if tabla[self.y - 1][self.x - 1] !=0: 
+                if tabla[self.y - 1][self.x - 1] !=0 and tabla[self.y - 1][self.x - 1].vilagos == False: 
                     uthet.append((self.y - 1,self.x - 1))
         else:
             if tabla[self.y + 1][self.x - 1] == 0 and tabla[self.y + 1][self.x + 1] == 0:
                 return [] 
-            elif tabla[self.y + 1][self.x - 1] !=0: 
+            elif tabla[self.y + 1][self.x - 1] !=0 and tabla[self.y + 1][self.x - 1].vilagos: 
                 uthet.append((self.y + 1,self.x - 1))
-                if tabla[self.y + 1][self.x + 1] !=0: 
+                if tabla[self.y + 1][self.x + 1] !=0 and tabla[self.y + 1][self.x + 1].vilagos: 
                     uthet.append((self.y + 1,self.x + 1))
-            elif tabla[self.y + 1][self.x + 1] !=0: 
+            elif tabla[self.y + 1][self.x + 1] !=0 and tabla[self.y + 1][self.x + 1].vilagos: 
                 uthet.append((self.y + 1,self.x + 1))
-                if tabla[self.y + 1][self.x - 1] !=0: 
+                if tabla[self.y + 1][self.x - 1] !=0 and tabla[self.y + 1][self.x - 1].vilagos: 
                     uthet.append((self.y + 1,self.x - 1))
         return uthet
     def lepes(self, y,x):
@@ -67,12 +67,12 @@ class Pawn(Piece):
             self.y -= y
             self.x -= x
             tabla[self.y][self.x] = self
-            tabla[self.y+y][self.x] = 0
+            tabla[self.y+y][self.x+x] = 0
         else: 
             self.y +=y
             self.x += x
             tabla[self.y][self.x] = self
-            tabla[self.y-y][self.x] = 0
+            tabla[self.y-y][self.x-x] = 0
 class Rook(Piece):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
@@ -100,7 +100,7 @@ screen_size = (720, 720)
 screen = pg.display.set_mode(screen_size)
 pg.display.set_caption("Bolond sakk 2.0 update")
 cell_size = screen_size[0] // 8
-tabla =[[0 for i in range(8)] for j in range(8)]
+tabla =[[0 for i in range(9)] for j in range(8)]
 lehetoseg_pos = []
 kijelolt = 0
 status = 0 #0: fehér választ bábut 1: fehér lép 2: fekete választ bábut 3: fekete lép
@@ -180,22 +180,24 @@ while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
-
+            print(tabla)
         if event.type == pg.MOUSEBUTTONUP:
             pos_x, pos_y = event.pos
             pos_x //= cell_size #kattintás poziciójából mátrix index
             pos_y //= cell_size
-            if type(tabla[pos_y][pos_x]) != int:
-                kijelolt = tabla[pos_y][pos_x]
+            if type(tabla[pos_y][pos_x]) != int and tabla[pos_y][pos_x].vilagos if status == 0 else type(tabla[pos_y][pos_x]) != int and tabla[pos_y][pos_x].vilagos == False:
+                kijelolt = tabla[pos_y][pos_x] #objektum
                 lehetoseg_pos = kijelolt.hova_lephet() + kijelolt.hova_uthet() if type(kijelolt) == Pawn else kijelolt.hova_lephet()
             else:
                 if (pos_y, pos_x) in lehetoseg_pos:
                     if kijelolt.vilagos:
                             kijelolt.lepes(kijelolt.y - pos_y, kijelolt.x - pos_x)
                             lehetoseg_pos = []
+                            status = 1
                     elif kijelolt.vilagos == False:
                             kijelolt.lepes(pos_y - kijelolt.y, pos_x - kijelolt.x)
                             lehetoseg_pos = []
+                            status = 0
                 else:
                     lehetoseg_pos = []
     pg.display.flip()
