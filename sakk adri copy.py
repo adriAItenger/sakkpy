@@ -89,6 +89,27 @@ class Queen(Piece):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
         self.kep = whiteQueen if self.vilagos else blackQueen
+    def hova_lephet(self): 
+        lephet = []
+        tav = 0
+        for i in range(8):
+            lephet.append((i,self.x))
+            lephet.append((self.y,i))
+        for x in lephet:
+            if tabla[]
+        return lephet
+    def lepes(self,y,x):
+        if self.vilagos:
+            self.y -= y
+            self.x -= x
+            tabla[self.y][self.x] = self
+            tabla[self.y+y][self.x+x] = 0
+        else: 
+            self.y +=y
+            self.x += x
+            tabla[self.y][self.x] = self
+            tabla[self.y-y][self.x-x] = 0
+
 class King(Piece):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
