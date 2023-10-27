@@ -94,9 +94,16 @@ class Queen(Piece):
         tav = 0
         for i in range(8):
             lephet.append((i,self.x))
+        for i in range(8):
             lephet.append((self.y,i))
-        for x in lephet:
-            if tabla[]
+        lephet.remove((self.y,self.x))
+        for y, x in reversed(lephet):
+            if tabla[y][x] != int:
+                if tav == 0:
+                    tav = abs((self.y-y)+(self.x-x))
+                else:
+                    if tav < abs((self.y-y)+(self.x-x)):
+                        lephet.remove((y,x))
         return lephet
     def lepes(self,y,x):
         if self.vilagos:
@@ -109,7 +116,6 @@ class Queen(Piece):
             self.x += x
             tabla[self.y][self.x] = self
             tabla[self.y-y][self.x-x] = 0
-
 class King(Piece):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
@@ -188,7 +194,7 @@ def draw_lehetoseg(y, x):
     pg.draw.circle(screen,((155,70,255) if tabla[y][x] == 0 else (255,0,0)),(x*cell_size + cell_size//2,y*cell_size + cell_size //2), 15,3) #//2 a középre igazításhoz cellán belül
 
 
-#Main game loop
+#Main game loop rohadjal meg
 running = True
 while running:
     timer.tick(fps)
