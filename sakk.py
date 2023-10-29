@@ -1,6 +1,6 @@
 import pygame as pg
 from pygame.locals import *
-import load as l
+
 
 #Piece classes
 class Piece:
