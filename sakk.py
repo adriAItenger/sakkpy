@@ -8,6 +8,17 @@ class Piece:
         self.x = x
         self.y = y
         self.vilagos = vilagos
+    def lepes(self,y,x):
+        if self.vilagos:
+            self.y -= y
+            self.x -= x
+            tabla[self.y][self.x] = self
+            tabla[self.y+y][self.x+x] = 0
+        else: 
+            self.y +=y
+            self.x += x
+            tabla[self.y][self.x] = self
+            tabla[self.y-y][self.x-x] = 0
     def __str__(self):
             return f"{self.x},{self.y},{self.vilagos}"
 class Pawn(Piece):
@@ -21,7 +32,7 @@ class Pawn(Piece):
                 return []
             
             if self.y == 6 and tabla[self.y - 2][self.x] == 0:
-                lephet.append((self.y - 2, self.x))
+                lephet.append((self.y - 2, self.x)) 
 
             if tabla[self.y - 1][self.x] == 0:
                 lephet.append((self.y - 1, self.x))
@@ -62,21 +73,6 @@ class Pawn(Piece):
                 if tabla[self.y + 1][self.x - 1] !=0 and tabla[self.y + 1][self.x - 1].vilagos: 
                     uthet.append((self.y + 1,self.x - 1))
         return uthet
-    def lepes(self, y,x):
-        if self.vilagos:
-            self.y -= y
-            self.x -= x
-            tabla[self.y][self.x] = self
-            tabla[self.y+y][self.x+x] = 0
-        else: 
-            self.y +=y
-            self.x += x
-            tabla[self.y][self.x] = self
-            tabla[self.y-y][self.x-x] = 0
-class Rook(Piece):
-    def __init__(self, y, x, vilagos):
-        super().__init__(y, x, vilagos)
-        self.kep = whiteRook if self.vilagos else blackRook
 class Knight(Piece):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
@@ -85,37 +81,87 @@ class Bishop(Piece):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
         self.kep = whiteBishop if self.vilagos else blackBishop
-class Queen(Piece):
+    def hova_lephet(self):
+        lepes = []
+        sor = self.y-1
+        oszlop = self.x-1
+        while sor >= 0 and oszlop >= 0:
+            if tabla[sor][oszlop] != 0:
+                lepes.append((sor,oszlop)) if tabla[sor][oszlop].vilagos != self.vilagos else None
+                break
+            else: lepes.append((sor,oszlop))
+            sor -= 1
+            oszlop -= 1
+        sor = self.y+1
+        oszlop = self.x+1
+        while sor < 8 and oszlop < 8:
+            if tabla[sor][oszlop] != 0:
+                lepes.append((sor,oszlop)) if tabla[sor][oszlop].vilagos != self.vilagos else None
+                break
+            else: lepes.append((sor,oszlop))
+            sor += 1
+            oszlop +=1
+        oszlop = self.x + 1
+        sor = self.y - 1
+        while oszlop < 8 and sor >= 0:
+            if tabla[sor][oszlop] != 0:
+                lepes.append((sor,oszlop)) if tabla[sor][oszlop].vilagos != self.vilagos else None
+                break
+            else: lepes.append((sor,oszlop))
+            oszlop += 1
+            sor -= 1
+        sor = self.y + 1
+        oszlop = self.x - 1
+        while oszlop >= 0 and sor < 8:
+            if tabla[sor][oszlop] != 0:
+                lepes.append((sor,oszlop)) if tabla[sor][oszlop].vilagos != self.vilagos else None
+                break
+            else: lepes.append((sor,oszlop))
+            oszlop -= 1
+            sor += 1
+        return lepes
+class Rook(Piece):
+    def __init__(self, y, x, vilagos):
+        super().__init__(y, x, vilagos)
+        self.kep = whiteRook if self.vilagos else blackRook
+    def hova_lephet(self):
+        lepes = []
+        sor = self.y-1
+        while sor >= 0:
+            if tabla[sor][self.x] != 0:
+                lepes.append((sor,self.x)) if tabla[sor][self.x].vilagos != self.vilagos else None
+                break
+            else: lepes.append((sor,self.x))
+            sor -= 1
+        sor = self.y+1
+        while sor < 8:
+            if tabla[sor][self.x] != 0:
+                lepes.append((sor,self.x)) if tabla[sor][self.x].vilagos != self.vilagos else None
+                break
+            else: lepes.append((sor,self.x))
+            sor += 1
+        oszlop = self.x+1
+        while oszlop < 8:
+            if tabla[self.y][oszlop] != 0:
+                lepes.append((self.y,oszlop)) if tabla[self.y][oszlop].vilagos != self.vilagos else None
+                break
+            else: lepes.append((self.y,oszlop))
+            oszlop += 1
+        oszlop = self.x-1
+        while oszlop >= 0:
+            if tabla[self.y][oszlop] != 0:
+                lepes.append((self.y,oszlop)) if tabla[self.y][oszlop].vilagos != self.vilagos else None
+                break
+            else: lepes.append((self.y,oszlop))
+            oszlop -= 1
+        return lepes
+class Queen(Rook,Bishop):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
         self.kep = whiteQueen if self.vilagos else blackQueen
-    def hova_lephet(self): 
-        lephet = []
-        tav = 0
-        for i in range(8):
-            lephet.append((i,self.x))
-        for i in range(8):
-            lephet.append((self.y,i))
-        lephet.remove((self.y,self.x))
-        for y, x in reversed(lephet):
-            if tabla[y][x] != int:
-                if tav == 0:
-                    tav = abs((self.y-y)+(self.x-x))
-                else:
-                    if tav < abs((self.y-y)+(self.x-x)):
-                        lephet.remove((y,x))
-        return lephet
-    def lepes(self,y,x):
-        if self.vilagos:
-            self.y -= y
-            self.x -= x
-            tabla[self.y][self.x] = self
-            tabla[self.y+y][self.x+x] = 0
-        else: 
-            self.y +=y
-            self.x += x
-            tabla[self.y][self.x] = self
-            tabla[self.y-y][self.x-x] = 0
+    def hova_lephet(self):
+        lepes = Rook.hova_lephet(self) + Bishop.hova_lephet(self)
+        return lepes
 class King(Piece):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
@@ -202,12 +248,10 @@ while running:
     draw_board()
     draw_pieces()
     for y, x in lehetoseg_pos: draw_lehetoseg(y, x)
-
     #Event loop
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
-            print(tabla)
         if event.type == pg.MOUSEBUTTONUP:
             pos_x, pos_y = event.pos
             pos_x //= cell_size #kattintás poziciójából mátrix index
