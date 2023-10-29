@@ -166,6 +166,51 @@ class King(Piece):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
         self.kep = whiteKing if self.vilagos else blackKing
+    def hova_lephet(self):
+        lepes = []
+        if (self.y == 0 or self.y == 7) and self.x == 4: kezdolepes = True
+        else: kezdolepes = False
+        if kezdolepes == False:
+                if type(tabla[self.y][self.x+1]) != int: lepes.append((self.y,self.x+1)) if tabla[self.y][self.x+1].vilagos != self.vilagos else None
+                else: lepes.append((self.y,self.x+1))
+                if type(tabla[self.y][self.x-1]) != int: lepes.append((self.y,self.x-1)) if tabla[self.y][self.x-1].vilagos != self.vilagos else None
+                else: lepes.append((self.y,self.x-1))
+                if type(tabla[self.y+1][self.x+1]) != int: lepes.append((self.y+1,self.x+1)) if tabla[self.y+1][self.x+1].vilagos != self.vilagos else None
+                else: lepes.append((self.y+1,self.x+1))
+                if type(tabla[self.y+1][self.x-1]) != int: lepes.append((self.y+1,self.x-1)) if tabla[self.y+1][self.x-1].vilagos != self.vilagos else None
+                else: lepes.append((self.y+1,self.x-1))
+                if type(tabla[self.y-1][self.x+1]) != int: lepes.append((self.y-1,self.x+1)) if tabla[self.y-1][self.x+1].vilagos != self.vilagos else None
+                else: lepes.append((self.y-1,self.x+1))
+                if type(tabla[self.y-1][self.x-1]) != int: lepes.append((self.y-1,self.x-1)) if tabla[self.y-1][self.x-1].vilagos != self.vilagos else None
+                else: lepes.append((self.y-1,self.x-1))
+                if type(tabla[self.y-1][self.x]) != int: lepes.append((self.y-1,self.x)) if tabla[self.y-1][self.x].vilagos != self.vilagos else None
+                else: lepes.append((self.y-1,self.x))
+                if type(tabla[self.y+1][self.x]) != int: lepes.append((self.y+1,self.x)) if tabla[self.y+1][self.x].vilagos != self.vilagos else None
+                else: lepes.append((self.y+1,self.x))
+        else:
+            if self.vilagos:
+                if type(tabla[self.y][self.x+1]) != int: lepes.append((self.y,self.x+1)) if tabla[self.y][self.x+1].vilagos != self.vilagos else None
+                else: lepes.append((self.y,self.x+1))
+                if type(tabla[self.y][self.x-1]) != int: lepes.append((self.y,self.x-1)) if tabla[self.y][self.x-1].vilagos != self.vilagos else None
+                else: lepes.append((self.y,self.x-1))
+                if type(tabla[self.y-1][self.x+1]) != int: lepes.append((self.y-1,self.x+1)) if tabla[self.y-1][self.x+1].vilagos != self.vilagos else None
+                else: lepes.append((self.y-1,self.x+1))
+                if type(tabla[self.y-1][self.x-1]) != int: lepes.append((self.y-1,self.x-1)) if tabla[self.y-1][self.x-1].vilagos != self.vilagos else None
+                else: lepes.append((self.y-1,self.x-1))
+                if type(tabla[self.y-1][self.x]) != int: lepes.append((self.y-1,self.x)) if tabla[self.y-1][self.x].vilagos != self.vilagos else None
+                else: lepes.append((self.y-1,self.x))
+            else:
+                if type(tabla[self.y][self.x+1]) != int: lepes.append((self.y,self.x+1)) if tabla[self.y][self.x+1].vilagos != self.vilagos else None
+                else: lepes.append((self.y,self.x+1))
+                if type(tabla[self.y][self.x-1]) != int: lepes.append((self.y,self.x-1)) if tabla[self.y][self.x-1].vilagos != self.vilagos else None
+                else: lepes.append((self.y,self.x-1))
+                if type(tabla[self.y+1][self.x+1]) != int: lepes.append((self.y+1,self.x+1)) if tabla[self.y+1][self.x+1].vilagos != self.vilagos else None
+                else: lepes.append((self.y+1,self.x+1))
+                if type(tabla[self.y+1][self.x-1]) != int: lepes.append((self.y+1,self.x-1)) if tabla[self.y+1][self.x-1].vilagos != self.vilagos else None
+                else: lepes.append((self.y+1,self.x-1))
+                if type(tabla[self.y+1][self.x]) != int: lepes.append((self.y+1,self.x)) if tabla[self.y+1][self.x].vilagos != self.vilagos else None
+                else: lepes.append((self.y+1,self.x))
+        return lepes
 
 #iniatialize pygame & variables
 pg.init()
@@ -237,7 +282,8 @@ def draw_pieces():
 
 #draw possible moves onto board
 def draw_lehetoseg(y, x):
-    pg.draw.circle(screen,((155,70,255) if tabla[y][x] == 0 else (255,0,0)),(x*cell_size + cell_size//2,y*cell_size + cell_size //2), 15,3) #//2 a középre igazításhoz cellán belül
+    if 0 <= y < 8 and 0 <= x < 8:
+        pg.draw.circle(screen,((155,70,255) if tabla[y][x] == 0 else (255,0,0)),(x*cell_size + cell_size//2,y*cell_size + cell_size //2), 15,3) #//2 a középre igazításhoz cellán belül
 
 
 #Main game loop rohadjal meg
