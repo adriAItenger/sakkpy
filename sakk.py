@@ -77,6 +77,18 @@ class Knight(Piece):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
         self.kep = whiteKnight if self.vilagos else blackKnight
+    def hova_lephet(self):
+        lepes = []
+        #mezo = 0
+        for i in [(self.y-2,self.x-1),(self.y-2,self.x+1),(self.y+2,self.x-1),(self.y+2,self.x+1),(self.y-1,self.x+2),(self.y-1,self.x-2),(self.y+1,self.x+2),(self.y+1,self.x-2)]:
+            if (0 <= i[0] <= 7) and (0 <= i[1] <= 7):
+                mezo = tabla[i[0]][i[1]]
+            else: mezo = 1
+            if mezo == 0:
+                lepes.append(i)
+            elif mezo == 1: pass
+            else: lepes.append(i) if self.vilagos != mezo.vilagos else None
+        return lepes
 class Bishop(Piece):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
@@ -168,7 +180,7 @@ class King(Piece):
         self.kep = whiteKing if self.vilagos else blackKing
     def hova_lephet(self):
         lepes = []
-        if (self.y == 0 or self.y == 7) and self.x == 4: kezdolepes = True
+        if (self.y == 0 or self.y == 7): kezdolepes = True
         else: kezdolepes = False
         if kezdolepes == False:
                 if type(tabla[self.y][self.x+1]) != int: lepes.append((self.y,self.x+1)) if tabla[self.y][self.x+1].vilagos != self.vilagos else None
@@ -221,7 +233,7 @@ cell_size = screen_size[0] // 8
 tabla =[[0 for i in range(9)] for j in range(8)]
 lehetoseg_pos = []
 kijelolt = 0
-status = 0 #0: fehér választ bábut 1: fehér lép 2: fekete választ bábut 3: fekete lép
+status = 0 #0: fehér lép #1:fekete lép
 timer = pg.time.Clock()
 fps = 60
 
@@ -258,6 +270,7 @@ for i in range(8):
         tabla[7][i] = Queen(7,i,True)
     tabla[6][i] = Pawn(6, i, True)
     tabla[1][i] = Pawn(1, i, False)
+    
 #draw the board based on screen size
 def draw_board():
     for sor in range(8):
@@ -286,7 +299,7 @@ def draw_lehetoseg(y, x):
         pg.draw.circle(screen,((155,70,255) if tabla[y][x] == 0 else (255,0,0)),(x*cell_size + cell_size//2,y*cell_size + cell_size //2), 15,3) #//2 a középre igazításhoz cellán belül
 
 
-#Main game loop rohadjal meg
+#Main game
 running = True
 while running:
     timer.tick(fps)
