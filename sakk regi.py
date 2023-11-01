@@ -1,7 +1,7 @@
 import pygame as pg
 import sys
 from pygame.locals import *
-
+#Az első stabil verzió amit én csináltam
 class Piece:
     def __init__(self, y, x, vilagos):
         self.x = x

@@ -14,7 +14,7 @@ class Piece:
             self.x -= x
             tabla[self.y][self.x] = self
             tabla[self.y+y][self.x+x] = 0
-        else: 
+        else:
             self.y +=y
             self.x += x
             tabla[self.y][self.x] = self
@@ -47,7 +47,7 @@ class Pawn(Piece):
             if tabla[self.y + 1][self.x] == 0:
                 lephet.append((self.y + 1,self.x))
             
-        return lephet
+        return lephet + self.hova_uthet()
     def hova_uthet(self):
         uthet = []
         if self.vilagos:
@@ -79,14 +79,14 @@ class Knight(Piece):
         self.kep = whiteKnight if self.vilagos else blackKnight
     def hova_lephet(self):
         lepes = []
-        #mezo = 0
+        #mezo = 0 ??
         for i in [(self.y-2,self.x-1),(self.y-2,self.x+1),(self.y+2,self.x-1),(self.y+2,self.x+1),(self.y-1,self.x+2),(self.y-1,self.x-2),(self.y+1,self.x+2),(self.y+1,self.x-2)]:
             if (0 <= i[0] <= 7) and (0 <= i[1] <= 7):
                 mezo = tabla[i[0]][i[1]]
             else: mezo = 1
             if mezo == 0:
                 lepes.append(i)
-            elif mezo == 1: pass
+            elif mezo == 1: pass # i have no idea
             else: lepes.append(i) if self.vilagos != mezo.vilagos else None
         return lepes
 class Bishop(Piece):
@@ -180,50 +180,16 @@ class King(Piece):
         self.kep = whiteKing if self.vilagos else blackKing
     def hova_lephet(self):
         lepes = []
-        if (self.y == 0 or self.y == 7): kezdolepes = True
-        else: kezdolepes = False
-        if kezdolepes == False:
-                if type(tabla[self.y][self.x+1]) != int: lepes.append((self.y,self.x+1)) if tabla[self.y][self.x+1].vilagos != self.vilagos else None
-                else: lepes.append((self.y,self.x+1))
-                if type(tabla[self.y][self.x-1]) != int: lepes.append((self.y,self.x-1)) if tabla[self.y][self.x-1].vilagos != self.vilagos else None
-                else: lepes.append((self.y,self.x-1))
-                if type(tabla[self.y+1][self.x+1]) != int: lepes.append((self.y+1,self.x+1)) if tabla[self.y+1][self.x+1].vilagos != self.vilagos else None
-                else: lepes.append((self.y+1,self.x+1))
-                if type(tabla[self.y+1][self.x-1]) != int: lepes.append((self.y+1,self.x-1)) if tabla[self.y+1][self.x-1].vilagos != self.vilagos else None
-                else: lepes.append((self.y+1,self.x-1))
-                if type(tabla[self.y-1][self.x+1]) != int: lepes.append((self.y-1,self.x+1)) if tabla[self.y-1][self.x+1].vilagos != self.vilagos else None
-                else: lepes.append((self.y-1,self.x+1))
-                if type(tabla[self.y-1][self.x-1]) != int: lepes.append((self.y-1,self.x-1)) if tabla[self.y-1][self.x-1].vilagos != self.vilagos else None
-                else: lepes.append((self.y-1,self.x-1))
-                if type(tabla[self.y-1][self.x]) != int: lepes.append((self.y-1,self.x)) if tabla[self.y-1][self.x].vilagos != self.vilagos else None
-                else: lepes.append((self.y-1,self.x))
-                if type(tabla[self.y+1][self.x]) != int: lepes.append((self.y+1,self.x)) if tabla[self.y+1][self.x].vilagos != self.vilagos else None
-                else: lepes.append((self.y+1,self.x))
-        else:
-            if self.vilagos:
-                if type(tabla[self.y][self.x+1]) != int: lepes.append((self.y,self.x+1)) if tabla[self.y][self.x+1].vilagos != self.vilagos else None
-                else: lepes.append((self.y,self.x+1))
-                if type(tabla[self.y][self.x-1]) != int: lepes.append((self.y,self.x-1)) if tabla[self.y][self.x-1].vilagos != self.vilagos else None
-                else: lepes.append((self.y,self.x-1))
-                if type(tabla[self.y-1][self.x+1]) != int: lepes.append((self.y-1,self.x+1)) if tabla[self.y-1][self.x+1].vilagos != self.vilagos else None
-                else: lepes.append((self.y-1,self.x+1))
-                if type(tabla[self.y-1][self.x-1]) != int: lepes.append((self.y-1,self.x-1)) if tabla[self.y-1][self.x-1].vilagos != self.vilagos else None
-                else: lepes.append((self.y-1,self.x-1))
-                if type(tabla[self.y-1][self.x]) != int: lepes.append((self.y-1,self.x)) if tabla[self.y-1][self.x].vilagos != self.vilagos else None
-                else: lepes.append((self.y-1,self.x))
-            else:
-                if type(tabla[self.y][self.x+1]) != int: lepes.append((self.y,self.x+1)) if tabla[self.y][self.x+1].vilagos != self.vilagos else None
-                else: lepes.append((self.y,self.x+1))
-                if type(tabla[self.y][self.x-1]) != int: lepes.append((self.y,self.x-1)) if tabla[self.y][self.x-1].vilagos != self.vilagos else None
-                else: lepes.append((self.y,self.x-1))
-                if type(tabla[self.y+1][self.x+1]) != int: lepes.append((self.y+1,self.x+1)) if tabla[self.y+1][self.x+1].vilagos != self.vilagos else None
-                else: lepes.append((self.y+1,self.x+1))
-                if type(tabla[self.y+1][self.x-1]) != int: lepes.append((self.y+1,self.x-1)) if tabla[self.y+1][self.x-1].vilagos != self.vilagos else None
-                else: lepes.append((self.y+1,self.x-1))
-                if type(tabla[self.y+1][self.x]) != int: lepes.append((self.y+1,self.x)) if tabla[self.y+1][self.x].vilagos != self.vilagos else None
-                else: lepes.append((self.y+1,self.x))
+        #mezo = 0 ??
+        for i in [(self.y,self.x-1),(self.y,self.x+1),(self.y+1,self.x-1),(self.y+1,self.x+1),(self.y-1,self.x+1),(self.y-1,self.x-1),(self.y+1,self.x),(self.y+-1,self.x)]:
+            if (0 <= i[0] <= 7) and (0 <= i[1] <= 7):
+                mezo = tabla[i[0]][i[1]]
+            else: mezo = 1
+            if mezo == 0:
+                lepes.append(i)
+            elif mezo == 1: pass # i have no idea
+            else: lepes.append(i) if self.vilagos != mezo.vilagos else None
         return lepes
-
 #iniatialize pygame & variables
 pg.init()
 screen_size = (720, 720)
@@ -317,7 +283,7 @@ while running:
             pos_y //= cell_size
             if type(tabla[pos_y][pos_x]) != int and tabla[pos_y][pos_x].vilagos if status == 0 else type(tabla[pos_y][pos_x]) != int and tabla[pos_y][pos_x].vilagos == False:
                 kijelolt = tabla[pos_y][pos_x] #objektum
-                lehetoseg_pos = kijelolt.hova_lephet() + kijelolt.hova_uthet() if type(kijelolt) == Pawn else kijelolt.hova_lephet()
+                lehetoseg_pos = kijelolt.hova_lephet()
             else:
                 if (pos_y, pos_x) in lehetoseg_pos:
                     if kijelolt.vilagos:
