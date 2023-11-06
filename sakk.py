@@ -202,7 +202,7 @@ timer = pg.time.Clock()
 fps = 60
 
 #load images
-whitePawn = pg.transform.scale(pg.image.load('assets/images/fehergyalog.png'),(72,72))
+whitePawn = pg.transform.scale(pg.image.load('assets/images/fehergyalog.png'),(72,72)) #Lolo ezeket ne baszogasd
 whiteRook = pg.transform.scale(pg.image.load('assets/images/feherbastya.png'),(72,72))
 whiteKnight = pg.transform.scale(pg.image.load('assets/images/feherhuszar.png'),(72,72))
 whiteBishop = pg.transform.scale(pg.image.load('assets/images/feherfuto.png'),(72,72))
@@ -278,7 +278,7 @@ while running:
             running = False
         if event.type == pg.MOUSEBUTTONUP:
             pos_x, pos_y = event.pos
-            pos_x //= cell_size #kattintás poziciójából mátrix index
+            pos_x //= cell_size #kattintás poziciójából mátrix index számolása
             pos_y //= cell_size
             if type(tabla[pos_y][pos_x]) != int and tabla[pos_y][pos_x].vilagos if status == 0 else type(tabla[pos_y][pos_x]) != int and tabla[pos_y][pos_x].vilagos == False:
                 kijelolt = tabla[pos_y][pos_x] #objektum
