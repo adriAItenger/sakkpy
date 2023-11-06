@@ -25,58 +25,56 @@ class Pawn(Piece):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
         self.kep = whitePawn if self.vilagos else blackPawn
+
     def hova_lephet(self):
         lephet = []
         if self.vilagos:
-            if tabla[self.y -1][self.x] != 0:
-                return []
-            
-            if self.y == 6 and tabla[self.y - 2][self.x] == 0:
-                lephet.append((self.y - 2, self.x)) 
+            if tabla[self.y -1][self.x] == 0:
+                if self.y == 6 and tabla[self.y - 2][self.x] == 0:
+                    lephet.append((self.y - 2, self.x)) # can move two squares forward if it is on its starting position
+                lephet.append((self.y - 1, self.x)) # can move one square forward
+                if self.x > 0 and tabla[self.y - 1][self.x - 1] != 0 and tabla[self.y - 1][self.x - 1].vilagos == False: 
+                    lephet.append((self.y - 1,self.x - 1)) # can capture an opponent's piece diagonally to the left
+                if self.x < 7 and tabla[self.y - 1][self.x + 1] !=0 and tabla[self.y - 1][self.x + 1].vilagos == False: 
+                    lephet.append((self.y - 1,self.x + 1)) # can capture an opponent's piece diagonally to the right
 
-            if tabla[self.y - 1][self.x] == 0:
-                lephet.append((self.y - 1, self.x))
+            else:
+                if self.x > 0 and tabla[self.y - 1][self.x - 1] != 0 and tabla[self.y - 1][self.x - 1].vilagos == False: 
+                    lephet.append((self.y - 1,self.x - 1)) # can capture an opponent's piece diagonally to the left
+                if self.x < 7 and tabla[self.y - 1][self.x + 1] !=0 and tabla[self.y - 1][self.x + 1].vilagos == False: 
+                    lephet.append((self.y - 1,self.x + 1)) # can capture an opponent's piece diagonally to the right
 
         else:
-            if tabla[self.y +1][self.x] != 0:
-                return []
-            
-            if self.y == 1 and tabla[self.y + 2][self.x] == 0:
-                lephet.append((self.y + 2,self.x))
+            if tabla[self.y +1][self.x] == 0:
+                if self.y == 1 and tabla[self.y + 2][self.x] == 0:
+                    lephet.append((self.y + 2,self.x)) # can move two squares forward if it is on its starting position
 
-            if tabla[self.y + 1][self.x] == 0:
-                lephet.append((self.y + 1,self.x))
+                lephet.append((self.y + 1,self.x)) # can move one square forward
             
-        return lephet + self.hova_uthet()
-    def hova_uthet(self):
-        uthet = []
-        if self.vilagos:
-            if tabla[self.y - 1][self.x - 1] ==0 and tabla[self.y - 1][self.x + 1] == 0:
-                return [] 
-            elif tabla[self.y - 1][self.x - 1] !=0 and tabla[self.y - 1][self.x - 1].vilagos == False: 
-                uthet.append((self.y - 1,self.x - 1))
-                if tabla[self.y - 1][self.x + 1] !=0 and tabla[self.y - 1][self.x + 1].vilagos == False: 
-                    uthet.append((self.y - 1,self.x + 1))
-            elif tabla[self.y - 1][self.x + 1] !=0 and tabla[self.y - 1][self.x + 1].vilagos == False: 
-                uthet.append((self.y - 1,self.x + 1))
-                if tabla[self.y - 1][self.x - 1] !=0 and tabla[self.y - 1][self.x - 1].vilagos == False: 
-                    uthet.append((self.y - 1,self.x - 1))
-        else:
-            if tabla[self.y + 1][self.x - 1] == 0 and tabla[self.y + 1][self.x + 1] == 0:
-                return [] 
-            elif tabla[self.y + 1][self.x - 1] !=0 and tabla[self.y + 1][self.x - 1].vilagos: 
-                uthet.append((self.y + 1,self.x - 1))
-                if tabla[self.y + 1][self.x + 1] !=0 and tabla[self.y + 1][self.x + 1].vilagos: 
-                    uthet.append((self.y + 1,self.x + 1))
-            elif tabla[self.y + 1][self.x + 1] !=0 and tabla[self.y + 1][self.x + 1].vilagos: 
-                uthet.append((self.y + 1,self.x + 1))
-                if tabla[self.y + 1][self.x - 1] !=0 and tabla[self.y + 1][self.x - 1].vilagos: 
-                    uthet.append((self.y + 1,self.x - 1))
-        return uthet
+                if self.x > 0 and tabla[self.y + 1][self.x - 1] !=0 and tabla[self.y + 1][self.x - 1].vilagos: 
+                    lephet.append((self.y + 1,self.x - 1)) # can capture an opponent's piece diagonally to the left
+                if self.x < 7 and tabla[self.y + 1][self.x + 1] !=0 and tabla[self.y + 1][self.x + 1].vilagos: 
+                    lephet.append((self.y + 1,self.x + 1)) # can capture an opponent's piece diagonally to the right
+
+            else:
+                if self.x > 0 and tabla[self.y + 1][self.x - 1] !=0 and tabla[self.y + 1][self.x - 1].vilagos: 
+                    lephet.append((self.y + 1,self.x - 1)) # can capture an opponent's piece diagonally to the left
+                if self.x < 7 and tabla[self.y + 1][self.x + 1] !=0 and tabla[self.y + 1][self.x + 1].vilagos: 
+                    lephet.append((self.y + 1,self.x + 1)) # can capture an opponent's piece diagonally to the right
+
+        return lephet # returns all possible moves (forward and capture)
 class Knight(Piece):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
         self.kep = whiteKnight if self.vilagos else blackKnight
+        sakkban = False
+    def sakkban_van(self):
+        for col in tabla:
+            for row in tabla:
+                for piece in row:
+                    if type(piece) != int and piece.vilagos != self.vilagos:
+                        if (self.y, self.x) in piece.hova_lephet():
+                            self.sakkban = True
     def hova_lephet(self):
         lepes = []
         #mezo = 0 ??
@@ -88,7 +86,7 @@ class Knight(Piece):
                 lepes.append(i)
             elif mezo == 1: pass # i have no idea
             else: lepes.append(i) if self.vilagos != mezo.vilagos else None
-        return lepes
+        return lepes  
 class Bishop(Piece):
     def __init__(self, y, x, vilagos):
         super().__init__(y, x, vilagos)
@@ -218,52 +216,53 @@ blackQueen = pg.transform.scale(pg.image.load('assets/images/feketevezer.png'),(
 blackKing = pg.transform.scale(pg.image.load('assets/images/feketekiraly.png'),(72,72))
 
 #Initialize starting positions
-for i in range(8):
-    if i == 0 or i == 7:
-        tabla[0][i] = Rook(0,i,False)
-        tabla[7][i] = Rook(7,i,True)
-    elif i == 1 or i == 6:
-        tabla[0][i] = Knight(0,i,False)
-        tabla[7][i] = Knight(7,i,True)
-    elif i == 2 or i == 5:
-        tabla[0][i] = Bishop(0,i,False)
-        tabla[7][i] = Bishop(7,i,True)
-    elif i == 4:
-        tabla[0][i] = King(0,i,False)
-        tabla[7][i] = King(7,i,True)
-    else:
-        tabla[0][i] = Queen(0,i,False)
-        tabla[7][i] = Queen(7,i,True)
-    tabla[6][i] = Pawn(6, i, True)
-    tabla[1][i] = Pawn(1, i, False)
-    
-#draw the board based on screen size
+def startPos():
+    for i in range(8):
+        if i == 0 or i == 7:
+            tabla[0][i] = Rook(0,i,False)
+            tabla[7][i] = Rook(7,i,True)
+        elif i == 1 or i == 6:
+            tabla[0][i] = Knight(0,i,False)
+            tabla[7][i] = Knight(7,i,True)
+        elif i == 2 or i == 5:
+            tabla[0][i] = Bishop(0,i,False)
+            tabla[7][i] = Bishop(7,i,True)
+        elif i == 4:
+            tabla[0][i] = King(0,i,False)
+            tabla[7][i] = King(7,i,True)
+        else:
+            tabla[0][i] = Queen(0,i,False)
+            tabla[7][i] = Queen(7,i,True)
+        tabla[6][i] = Pawn(6, i, True)
+        tabla[1][i] = Pawn(1, i, False)
+startPos()   
+#Draw the board based on screen size
 def draw_board():
-    for sor in range(8):
-        for oszlop in range(4):
-            if sor % 2 == 0:
-                #vilagos negyzet majd offset sötét négyzet
+    for sor in range(8): # Loop through each row of the board
+        for oszlop in range(4): # Loop through each column of the board
+            if sor % 2 == 0: # If the row is even
+                # Draw a light square and a dark square next to each other
                 pg.draw.rect(screen, (251, 244, 238), pg.Rect(oszlop * 2 * cell_size, sor*cell_size, cell_size, cell_size))
                 pg.draw.rect(screen, (80, 81, 104), pg.Rect(oszlop * 2 * cell_size + cell_size, sor*cell_size, cell_size, cell_size))
-            else:
+            else: # If the row is odd
+                # Draw a dark square and a light square next to each other
                 pg.draw.rect(screen, (251, 244, 238), pg.Rect(cell_size + oszlop * 2 * cell_size, sor*cell_size, cell_size, cell_size))
-                pg.draw.rect(screen, (80, 81, 104), pg.Rect(oszlop * 2 * cell_size, sor*cell_size, cell_size, cell_size))
-        for i in range(9):
-            pg.draw.line(screen,'black',(0,i*cell_size),(720,i*cell_size),2)
-            pg.draw.line(screen,'black',(i*cell_size,0),(i*cell_size,720),2)
+                pg.draw.rect(screen, (80, 81, 104), pg.Rect(oszlop * 2 * cell_size, sor*cell_size, cell_size, cell_size)) 
+        for i in range(9): # Draw the horizontal and vertical lines of the board
+            pg.draw.line(screen,'black',(0,i*cell_size),(720,i*cell_size),2) # Horizontal line
+            pg.draw.line(screen,'black',(i*cell_size,0),(i*cell_size,720),2) # Vertical line
 
 #draw pieces onto board
 def draw_pieces():
     for i in range(8):
         for j in range(8):
             if type(tabla[i][j]) != int:
-                screen.blit(tabla[i][j].kep,(j*cell_size+9,i*cell_size+9))
+                screen.blit(tabla[i][j].kep,(j*cell_size+9,i*cell_size+9)) #+9 a középre igazításhoz cellán belül
 
 #draw possible moves onto board
 def draw_lehetoseg(y, x):
     if 0 <= y < 8 and 0 <= x < 8:
         pg.draw.circle(screen,((155,70,255) if tabla[y][x] == 0 else (255,0,0)),(x*cell_size + cell_size//2,y*cell_size + cell_size //2), 15,3) #//2 a középre igazításhoz cellán belül
-
 
 #Main game
 running = True
