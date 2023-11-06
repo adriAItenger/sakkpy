@@ -2,11 +2,13 @@
 Egyszerű sakk pythonban, alapja a pygame library.
 ## A kód struktúrája
 A kód több osztályból és funkcióból áll:
-Piece: Ez az osztály képviseli a sakkbábukat. Minden bábuhoz tartozik egy pozíció (y, x) és egy szín (világos vagy sötét).
-Pawn, Rook, Knight, Bishop, Queen, King: Ezek az osztályok a Piece osztályból származnak, és képviselik a különböző sakkbábukat. Minden osztályhoz tartoznak saját mozgási szabályok.
-draw_board(): Ez a funkció rajzolja meg a sakktáblát.
-draw_pieces(): Ez a funkció rajzolja meg a bábukat a táblán.
-draw_lehetoseg(y, x): Ez a funkció kiemeli a lehetséges lépéseket a megadott bábu számára.
+* **Piece**: Ez az osztály képviseli a sakkbábukat. Minden bábuhoz tartozik egy pozíció (y, x) és egy szín (*vilagos* változó)
+* Pawn, Rook, Knight, Bishop, Queen, King: Ezek az osztályok a **Piece** osztályból származnak, és képviselik a különböző sakkbábukat. Minden osztályhoz tartoznak saját mozgási szabályok
+* draw_board(): Ez a funkció rajzolja meg a sakktáblát.
+* draw_pieces(): Ez a funkció rajzolja meg a bábukat a táblán.
+* draw_lehetoseg(y, x): Ez a funkció kiemeli a lehetséges lépéseket a megadott bábu számára.
+### A háttér
+A bábuk tárolására egy **tabla** nevű mátrixot használok aminek elemei a bábuk példányai.
 ```
 def draw_board():
     for sor in range(8):
